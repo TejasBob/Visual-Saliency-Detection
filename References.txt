@@ -1,0 +1,14 @@
+REFERENCES
+
+
+[1] A. M. Triesman and G. Gelade. A feature-integration theory of attention. Cognitive Psychology, 12(1):97–136, 1980.
+
+[2] Y. Zhai and M. Shah. Visual attention detection in video sequences using spatiotemporal cues. In ACM Multimedia, pages 815–824, 2006. 2, 3, 4, 5, 6, 7
+
+[3] Ming-Ming Cheng, Guo-Xin Zhang, Niloy J. Mitra, Xiaolei Huang, and Shi-Min Hu, “Global contrast based salient region detection,” in CVPR, 2011, pp. 409–416
+
+[4] Jiamei Shuai, Laiyun Qing, Jun Miao, Zhiguo Ma, and Xilin Chen, Salient Region Detection via Texture-Suppressed Background Contrast, Proc. of IEEE International Conference on Image Processing (ICIP'13), 		Melbourne, Australia, Sep. 15-20, 2013.
+
+[5] Wangjiang Zhu, Shuang Liang, Yichen Wei, Saliency Optimization From Robust Background Detection, IEEE Conference on Computer Vision and Pattern Recognition 2014
+
+[6] Radhakrishna Achanta, Appu Shaji, Kevin Smith, Aur ´elien Lucchi, Pascal Fua, and Sabine S¨usstrunk, “Slic superpixels compared to state-of-the-art superpixel methods,” IEEE Trans. Pattern Anal. Mach. 		Intell., vol. 34, no. 11, pp. 2274–2282, 2012.
