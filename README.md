@@ -12,3 +12,17 @@ Run demo in Octave command window as:
 
 Results will be stored in **result** directory
 
+**Results**
+
+<p align="left">
+  <img src="https://github.com/TejasBob/Visual-Saliency-Detection/blob/master/result/res_0052.jpg" width="350"/>
+</p>
+<p>
+  <img src="https://github.com/TejasBob/Visual-Saliency-Detection/blob/master/result/res_0038.jpg" width="350"/>
+</p>
+<p>
+  <img src="https://github.com/TejasBob/Visual-Saliency-Detection/blob/master/result/res_0032.jpg" width="350"/>
+</p>
+<p>
+  <img src="https://github.com/TejasBob/Visual-Saliency-Detection/blob/master/result/res_0051.jpg" width="350"/>
+</p>
