@@ -2,7 +2,6 @@ function r=compress(I,key,L1,C1,L2,C2)
 %*1 for salient
 %*2 for non-salient
 
-
 R=I(:,:,1);
 G=I(:,:,2);
 B=I(:,:,3);

@@ -49,7 +49,7 @@ b(n+1)=x(length(x));
 i=1;
 j=1;
 %storing run length encoded data to e
-while i<=length(l)&&j<=2*length(l)
+while i<=length(l) & j<=2*length(l)
     e(j)=l(i);
     e(j+1)=b(i);
     i=i+1;
@@ -84,7 +84,7 @@ else
         i=1;
         j=1;
 %storing run length encoded data to e
-        while i<=length(l)&&j<=2*length(l)
+        while i<=length(l) & j<=2*length(l)
             e(p,j)=l(i);
             e(p,j+1)=b(i);
             i=i+1;
