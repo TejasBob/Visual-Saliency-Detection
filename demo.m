@@ -1,6 +1,6 @@
 pkg load image
 pkg load signal
-
+warning('off', 'Octave:possible-matlab-short-circuit-operator');
 
 clc;
 close all;
@@ -8,23 +8,33 @@ clear all;
 tic;
 path = pwd;
 
-image_path = cat(2, path, '/images/')
-source_path = cat(2,path, '/source')
-result_path = cat(2, path, '/result/')
+image_path = cat(2, path, '/images/');
+source_path = cat(2,path, '/source');
+result_path = cat(2, path, '/result/');
+decode_path = cat(2, path, '/compressed/');
 
-addpath(source_path)
+addpath(source_path);
+
+global L;
+global C;
+Q1=50; %salient
+Q2=50; %non-salient
+L=load( cat(2,source_path,'/luminance.dat'));
+C=load(cat(2,source_path,'/chrominance.dat'));
+[L1, C1]=jpeg_tables(Q1);
+[L2, C2]=jpeg_tables(Q2);
+map=zeros(1,32*32);
 
 
 %Read Input Image and resize to 256*256
 
-for ix=1:1:1
-
+for ix=1:1:58
   img_name = cat( 2, image_path, sprintf('%04d',ix));
-  img_name = cat(2,img_name,'.jpg')
-  disp( img_name)
-  I1 = imread(img_name);
+  img_name = cat(2,img_name,'.tiff');
   I1 = imread(img_name);
   I1=imresize(I1,[256,256]);
+%  imwrite(I1,img_name,'jpg');
+
   [row ,col, chnl]=size(I1);
 %  imshow(I1)
 
@@ -178,61 +188,63 @@ for ix=1:1:1
   result = [I1,uint8(color_sal)];
   disp(result_image_path = cat(2, result_path, cat(2, sprintf('res_%04d', ix), '.jpg')))
   imwrite(result,result_image_path);
-end
+
 %%JPEG CODIND
 
-global L;
-global C;
-Q1=50; %salient
-Q2=50; %non-salient
-L=load( cat(2,source_path,'/luminance.dat'));
-C=load(cat(2,source_path,'/chrominance.dat'));
-[L1, C1]=jpeg_tables(Q1);
-[L2, C2]=jpeg_tables(Q2);
-map=zeros(1,32*32);
-index=1;
-for i=1:8:256
-    for j=1:8:256
-        map(1,index)=sal(i,j);
-        index=index+1;
-    end
-end
-%
-%%comp_I has the transform domain compressed image
-map=reshape(map,1,32*32);
-comp_I=zeros(8,8,3,32*32);
-rlc=0;
-for i=1:32*32
-    comp_I(:,:,:,i)=compress(image_block_rgb(:,:,:,i),map(1,i),L1,C1,L2,C2);
-    rlc=cat(2,rlc,run_length(zigzag(comp_I(:,:,1,i))), ...
-        run_length(zigzag(comp_I(:,:,2,i))), ...
-        run_length(zigzag(comp_I(:,:,3,i))) ...
-        );
-end
-rlc(1)=[];
-disp("complete")
-%decoding
-decode_I=zeros(8,8,3,32*32);
-for i=1:32*32
-    decode_I(:,:,:,i)=decode_jpeg(comp_I(:,:,:,i),map(1,i),L1,C1,L2,C2);
-end
+%  global L;
+%  global C;
+%  Q1=50; %salient
+%  Q2=50; %non-salient
+%  L=load( cat(2,source_path,'/luminance.dat'));
+%  C=load(cat(2,source_path,'/chrominance.dat'));
+%  [L1, C1]=jpeg_tables(Q1);
+%  [L2, C2]=jpeg_tables(Q2);
+%  map=zeros(1,32*32);
+  index=1;
+  for i=1:8:256
+      for j=1:8:256
+          map(1,index)=sal(i,j);
+          index=index+1;
+      end
+  end
+  %
+  %%comp_I has the transform domain compressed image
+  map=reshape(map,1,32*32);
+  comp_I=zeros(8,8,3,32*32);
+  rlc=0;
+  for i=1:32*32
+      comp_I(:,:,:,i)=compress(image_block_rgb(:,:,:,i),map(1,i),L1,C1,L2,C2);
+      rlc=cat(2,rlc,run_length(zigzag(comp_I(:,:,1,i))), ...
+          run_length(zigzag(comp_I(:,:,2,i))), ...
+          run_length(zigzag(comp_I(:,:,3,i))) ...
+          );
+  end
+  rlc(1)=[];
+  disp("complete")
+  %decoding
+  decode_I=zeros(8,8,3,32*32);
+  for i=1:32*32
+      decode_I(:,:,:,i)=decode_jpeg(comp_I(:,:,:,i),map(1,i),L1,C1,L2,C2);
+  end
 
-result=zeros(256,256);
-index=1;
-for i=0:1:(row/8)-1
-    for j=0:1:(col/8)-1
-        for n=1:8
-            for k=1:8
-                result(n+8*i,k+8*j,1)=decode_I(n,k,1,index);
-                result(n+8*i,k+8*j,2)=decode_I(n,k,2,index);
-                result(n+8*i,k+8*j,3)=decode_I(n,k,3,index);
-            end
-        end
-        index=index+1;
-    end
+  result=zeros(256,256);
+  index=1;
+  for i=0:1:(row/8)-1
+      for j=0:1:(col/8)-1
+          for n=1:8
+              for k=1:8
+                  result(n+8*i,k+8*j,1)=decode_I(n,k,1,index);
+                  result(n+8*i,k+8*j,2)=decode_I(n,k,2,index);
+                  result(n+8*i,k+8*j,3)=decode_I(n,k,3,index);
+              end
+          end
+          index=index+1;
+      end
+  end
+  % subplot(224)
+  % figure,imshow(uint8(result));
+  img_name = cat( 2, decode_path, sprintf('new_%04d',ix));
+  imwrite(uint8(result),cat(2,img_name,'.jpg'),'jpg');
+  %compression_ratio = 256*256*3/length(rlc)
+  toc
 end
-% subplot(224)
-% figure,imshow(uint8(result));
-imwrite(uint8(result),'decoded.jpg','jpg')
-compression_ratio = 256*256*3/length(rlc)
-toc
