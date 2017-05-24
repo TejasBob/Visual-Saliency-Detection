@@ -3,8 +3,13 @@ finding most salient regions in images
 
 In order to run this demo your system must have following packages:
     
-    Octave(4.0.2)
-    Image(2.6.1)
+           |    Package Name    | Version         | 
+           |--------------------+---------------- |
+           |    control         |   3.0.0         |
+           |    image           |   2.6.1         |
+           |    signal          |   1.3.2         |
+           
+           
 Keep Test images in **images** directory      
 
 Run demo in Octave command window as:
