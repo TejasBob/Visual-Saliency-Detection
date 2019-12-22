@@ -60,7 +60,7 @@ Results will be stored in **result** directory
 
 
 
-**JPEG Compression**
+**Adaptive JPEG Compression**
 
     For 0059.tiff under images folder:       
     Original File Size                              (tiff)   : 197KB
